@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="key.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asan Pass: Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="head">
+            <h1> <img src="key.png" alt="App Logo"> <strong>Asan Pass</strong> Password Generator</h1>
+            <p class="description">Generate strong random passwords and stay safe online.</p>
+        </div>
+
+        <hr>
+        <div class="content">
+            <div class="row">
+                <input type="text" id="generatedPass" readonly>
+            </div>
+            <div class="row">
+                <label class="row-label" for="passLen">Password Length:</label>
+                <input type="number" name="passLen" id="passLen" min="8" max="50" value="10">
+            </div>
+            <div class="row">
+                <label class="row-label" for="">Include Capital Letters:</label>
+                <input type="checkbox" name="capLetter" id="capLetter" checked>
+                <label for="capLetter">A-Z</label>
+            </div>
+            <div class="row">
+                <label class="row-label" for="">Include Small Letters:</label>
+                <input type="checkbox" name="smallLetter" id="smallLetter" checked>
+                <label for="smallLetter">a-z</label>
+            </div>
+            <div class="row">
+                <label class="row-label" for="">Include Numbers:</label>
+                <input type="checkbox" name="nums" id="nums">
+                <label for="smallLetter">0-9</label>
+            </div>
+            <div class="row">
+                <label class="row-label" for="">Include Special Characters:</label>
+                <input type="checkbox" name="specialChar" id="specialChar">
+                <label for="specialChar">!@#$%^&*</label>
+            </div>
+            <div class="row center">
+                <input type="button" value="Generate Password" onclick="generatePassword()">
+                <input type="button" value="Copy Password" onclick="copyToClipboard()">
+            </div>
+        </div>
+
+
+
+        <div class="row center footer">
+
+            <hr>
+            <p>&copy; All rights reserved for <a href="https://github.com/skm2017" class="link" target="_blank">skm2017</a>.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
