@@ -26,24 +26,25 @@ function copyToClipboard() {
 }
 
 function passwordGenerator(passLen, incCap, incSmall, incNum, incSpecial) {
-    passLen = Math.abs(passLen);
-    console.log("passLen: ", passLen)
-    let charCount = calcCharCount(passLen, incCap, incSmall, incNum, incSpecial);
-    let repeatStr = (passLen / 10) + 1;
-    console.log("repeatStr: ", repeatStr)
-    let capLetters = charList('A', 'Z', 1).repeat(repeatStr);
-    let smallLetters = charList('a', 'z', 1).repeat(repeatStr);
-    let numbers = charList('0', '9', 1).repeat(repeatStr);
-    let specialChars = '!@#$%^&*_.'.repeat(repeatStr);
+    let capLetters = charList('A', 'Z', 1);
+    let smallLetters = charList('a', 'z', 1);
+    let numbers = charList('0', '9', 1);
+    let specialChars = '!@#$%^&*_.'; 
     let passStr = '';
 
-    if (incCap) passStr += shuffleString(capLetters).substring(0, passLen);
-    if (incSmall) passStr += shuffleString(smallLetters).substring(0, passLen);
-    if (incNum) passStr += shuffleString(numbers).substring(0, passLen);
-    if (incSpecial) passStr += shuffleString(specialChars).substring(0, passLen);
+    for (let i = 0; i < passLen; i++) {
+        let charSet = '';
+        if (incCap) charSet += capLetters;
+        if (incSmall) charSet += smallLetters;
+        if (incNum) charSet += numbers;
+        if (incSpecial) charSet += specialChars;
 
-    console.log("passStr: ", passStr)
-    return shuffleString(passStr);
+        if (charSet.length > 0) {
+            passStr += charSet[Math.floor(Math.random() * charSet.length)];
+        }
+    }
+
+    return passStr;
 }
 
 function charList(startChar, endChar, step = 1) {
