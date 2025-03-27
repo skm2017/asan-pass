@@ -1,71 +1,58 @@
 "use strict";
 
+const CAP_LETTERS = charList('A', 'Z');
+const SMALL_LETTERS = charList('a', 'z');
+const NUMBERS = charList('0', '9');
+const SPECIAL_CHARS = '!@#$%^&*_.';
+
 function generatePassword() {
-    let passLen = document.querySelector("#passLen").value;
-    let includeCapLetter = document.querySelector("#capLetter").checked;
-    let includeSmallLetter = document.querySelector("#smallLetter").checked;
-    let includeNumber = document.querySelector("#nums").checked;
-    let includeSpecialChar = document.querySelector("#specialChar").checked;
-    let generatedPass = document.querySelector("#generatedPass");
+    const passLen = document.querySelector("#passLen").value;
+    const includeCapLetter = document.querySelector("#capLetter").checked;
+    const includeSmallLetter = document.querySelector("#smallLetter").checked;
+    const includeNumber = document.querySelector("#nums").checked;
+    const includeSpecialChar = document.querySelector("#specialChar").checked;
+    const generatedPass = document.querySelector("#generatedPass");
 
     generatedPass.value = passwordGenerator(passLen, includeCapLetter, includeSmallLetter, includeNumber, includeSpecialChar);
-
 }
 
 function copyToClipboard() {
-    let generatedPass = document.querySelector("#generatedPass");
+    const generatedPass = document.querySelector("#generatedPass");
 
-    generatedPass.select();
-    generatedPass.setSelectionRange(0, 99999);
-    if ((generatedPass.value).length > 0) {
-        navigator.clipboard.writeText(generatedPass.value);
-        alert("Password Copied!");
+    if (generatedPass.value.length > 0) {
+        generatedPass.select();
+        generatedPass.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(generatedPass.value).then(() => {
+            alert("Password Copied!");
+        }).catch(() => {
+            alert("Failed to copy password!");
+        });
     } else {
         alert("Please generate a password first!");
     }
 }
 
 function passwordGenerator(passLen, incCap, incSmall, incNum, incSpecial) {
-    let capLetters = charList('A', 'Z', 1);
-    let smallLetters = charList('a', 'z', 1);
-    let numbers = charList('0', '9', 1);
-    let specialChars = '!@#$%^&*_.'; 
-    let passStr = '';
+    let charSet = '';
 
-    for (let i = 0; i < passLen; i++) {
-        let charSet = '';
-        if (incCap) charSet += capLetters;
-        if (incSmall) charSet += smallLetters;
-        if (incNum) charSet += numbers;
-        if (incSpecial) charSet += specialChars;
+    if (incCap) charSet += CAP_LETTERS;
+    if (incSmall) charSet += SMALL_LETTERS;
+    if (incNum) charSet += NUMBERS;
+    if (incSpecial) charSet += SPECIAL_CHARS;
 
-        if (charSet.length > 0) {
-            passStr += charSet[Math.floor(Math.random() * charSet.length)];
-        }
+    if (charSet.length === 0) {
+        alert("Please select at least one character type!");
+        return '';
     }
 
-    return passStr;
+    return Array.from({ length: passLen }, () => charSet[Math.floor(Math.random() * charSet.length)]).join('');
 }
 
-function charList(startChar, endChar, step = 1) {
-    startChar = startChar.charCodeAt(); endChar = endChar.charCodeAt();
-    return [...Array(Math.floor((endChar - startChar) / step) + 1)].map((_, i) => {
-        return String.fromCharCode(startChar + i * step);
-    }).join("");
+function charList(startChar, endChar) {
+    const startCode = startChar.charCodeAt(0);
+    const endCode = endChar.charCodeAt(0);
+    return String.fromCharCode(...Array.from({ length: endCode - startCode + 1 }, (_, i) => startCode + i));
 }
 
-function shuffleString(str) {
-    return [...str].sort(() => Math.random()-.5).join('');
-}
-
-function calcCharCount(passLen, incCap, incSmall, incNum, incSpecial) {
-    let count = 0;
-    if (incCap) count++;
-    if (incSmall) count++;
-    if (incNum) count++;
-    if (incSpecial) count++;
-
-    if (count == 0) alert("Please select your characters of choice!");
-    console.log("count ", count);
-    return passLen / count;
-}
+document.querySelector("#generateBtn").addEventListener("click", generatePassword);
+document.querySelector("#copyBtn").addEventListener("click", copyToClipboard);
